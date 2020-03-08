@@ -1,4 +1,4 @@
-package org.smart4j.framework.util;
+package com.autumn.tool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +10,7 @@ import java.net.URLEncoder;
 /**
  * @program: CodecUtil
  * @description: 编码与解码操作工具类
- * @author: Created by Autumn
- * @create: 2018-10-24 15:49
+ * @Author 秋雨
  */
 public class CodecUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(CodecUtil.class);

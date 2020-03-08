@@ -1,13 +1,12 @@
-package org.smart4j.framework.util;
+package com.autumn.tool;
 
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * @program: chapter2->CollectionUtil
+ * @program: CollectionUtil
  * @description: 集合工具类
- * @author: qiuyu
- * @create: 2018-08-15 21:19
+ * @Author 秋雨
  **/
 public class CollectionUtil {
     /**

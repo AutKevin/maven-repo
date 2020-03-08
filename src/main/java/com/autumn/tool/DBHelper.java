@@ -1,4 +1,4 @@
-package org.smart4j.framework.util;
+package com.autumn.tool;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.QueryRunner;
@@ -22,6 +22,7 @@ import java.util.Properties;
 /**
  * @program: DBHelper
  * @description: 数据库操作类
+ * @Author 秋雨
  **/
 public class DBHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(DBHelper.class);

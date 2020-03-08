@@ -1,9 +1,10 @@
-package org.smart4j.framework.util;
+package com.autumn.tool;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
- * 数组工具类
+ * @description: 数组工具类
+ * @Author 秋雨
  */
 public class ArrayUtil {
     /**

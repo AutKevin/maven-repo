@@ -1,8 +1,9 @@
-package org.smart4j.framework.util;
+package com.autumn.tool;
 
 /**
  * CastUtil
  * @description: 数据转型工具类
+ * @Author 秋雨
  **/
 public class CastUtil {
     /** 

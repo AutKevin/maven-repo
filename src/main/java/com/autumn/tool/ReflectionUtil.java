@@ -1,4 +1,4 @@
-package org.smart4j.framework.util;
+package com.autumn.tool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +8,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * 反射工具
- * 实现bean容器
+ * @program: 反射工具
+ * @description: 实现bean容器
+ * @Author 秋雨
  */
 public class ReflectionUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReflectionUtil.class);

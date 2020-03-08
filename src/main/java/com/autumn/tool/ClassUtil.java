@@ -1,4 +1,4 @@
-package org.smart4j.framework.util;/**
+package com.autumn.tool;/**
  * Created by Administrator on 2018/9/11.
  */
 
@@ -19,8 +19,7 @@ import java.util.jar.JarFile;
 /**
  * @program: ClassUtil
  * @description: 類加載器
- * @author: qiuyu
- * @create: 2018-09-11 19:00
+ * @Author 秋雨
  **/
 public class ClassUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassUtil.class);

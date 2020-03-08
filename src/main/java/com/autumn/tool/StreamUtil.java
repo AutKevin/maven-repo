@@ -1,4 +1,4 @@
-package org.smart4j.framework.util;
+package com.autumn.tool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +8,7 @@ import java.io.*;
 /**
  * @program: StreamUtil
  * @description: 流操作常用工具类
- * @author: Created by Autumn
- * @create: 2018-10-24 15:41
+ * @Author 秋雨
  */
 
 public class StreamUtil {

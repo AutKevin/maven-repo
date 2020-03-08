@@ -1,4 +1,4 @@
-package org.smart4j.framework.util;
+package com.autumn.tool;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,8 +10,7 @@ import java.io.IOException;
 /**
  * @program: JsonUtil
  * @description: JSON工具类
- * @author: Created by Autumn
- * @create: 2018-10-24 15:55
+ * @Author 秋雨
  */
 
 public class JsonUtil {

@@ -1,4 +1,4 @@
-package org.smart4j.framework.util;
+package com.autumn.tool;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -11,8 +11,7 @@ import java.io.IOException;
 /**
  * @program: FileUtil
  * @description: 文件操作工具类
- * @author: Created by Autumn
- * @create: 2018-12-19 13:03
+ * @Author 秋雨
  */
 public class FileUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);

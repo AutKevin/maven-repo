@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.autumn</groupId>
+    <artifactId>aeo-tool</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <github.global.server>github</github.global.server>
+    </properties>
+
+    <dependencies>
+        <!-- 发布到服务器插件的依赖包 -->
+        <dependency>
+            <groupId>com.github.github</groupId>
+            <artifactId>site-maven-plugin</artifactId>
+            <version>0.12</version>
+            <type>maven-plugin</type>
+        </dependency>
+        <!--slf4j-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.9</version>
+        </dependency>
+        <!--Jackson-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.10.1</version>
+        </dependency>
+        <!--常用的两个Apache Commons工具类-->
+        <!--Apache Commons Lang-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+        <!--Apache Commons Collections-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <!--Apache Commons DbUtils-->
+        <dependency>
+            <groupId>commons-dbutils</groupId>
+            <artifactId>commons-dbutils</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <!--Apache DBCP连接池-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <!--文件上传-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+    <pluginManagement>
+        <plugins>
+            <!--发布到本地仓库插件-->
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+                </configuration>
+            </plugin>
+            <!--发布到服务器插件,需要依赖上面的部分-->
+            <!--查看aliyun的仓库https://maven.aliyun.com/mvn/search,发现需要依赖包-->
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version >0.12</version>
+                <configuration>
+                    <message >Maven artifacts for ${project.version}</message>
+                    <noJekyll>true</noJekyll>
+                    <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!--编译出来的的target/mvn-repo就是可以安装在仓库里的格式-->
+                    <branch>refs/heads/repository</branch>  <!--branch必须是refs/heads/开头的，后边跟分支名称-->
+                    <merge>true</merge>
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                    <repositoryName>maven-repo</repositoryName> <!--对应github上创建的仓库名称 name-->
+                    <repositoryOwner>autumn</repositoryOwner> <!--github 仓库所有者即登录用户名-->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </pluginManagement>
+    </build>
+
+    <!--使用者需要 - 引入仓库-->
+    <repositories>
+        <repository>
+            <id>maven-repo-master</id>
+            <url>https://raw.github.com/AutKevin/maven-repo/repository/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>

@@ -26,10 +26,20 @@ public class DateUtil {
 
     /**
      * 获取当前时间(年月日时分秒)
-     * @return
+     * @return yyyy-MM-dd HH:mm:ss
      */
     public static String getCurrTime(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = simpleDateFormat.format(new Date());
+        return time;
+    }
+
+    /**
+     * 获取当前时间(年月日时分秒)
+     * @return yyyy-MM-ddHHmmss
+     */
+    public static String getCurrTimeForFile(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddHHmmss");
         String time = simpleDateFormat.format(new Date());
         return time;
     }

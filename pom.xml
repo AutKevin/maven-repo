@@ -10,17 +10,18 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--配置setting中的github使用哪个server-->
         <github.global.server>github</github.global.server>
     </properties>
 
     <dependencies>
         <!-- 发布到服务器插件的依赖包 -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.github.github</groupId>
             <artifactId>site-maven-plugin</artifactId>
-            <version>0.9</version>
+            <version>0.12</version>
             <type>maven-plugin</type>
-        </dependency>
+        </dependency>-->
         <!--slf4j-->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -69,31 +70,32 @@
     <build>
     <pluginManagement>
         <plugins>
-            <!--发布到本地仓库插件-->
+            <!--本地仓库插件-->
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.1</version>
                 <configuration>
+                    <!--编译的生成位置在target/mvn-repo-->
                     <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
                 </configuration>
             </plugin>
             <!--发布到服务器插件,需要依赖上面的部分-->
             <!--查看aliyun的仓库https://maven.aliyun.com/mvn/search,发现需要依赖包-->
-            <plugin>
+            <!--<plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version >0.9</version>
+                <version >0.12</version>
                 <configuration>
                     <message >Maven artifacts for ${project.version}</message>
                     <noJekyll>true</noJekyll>
-                    <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory><!--本地jar地址-->
-                    <branch>refs/heads/master</branch><!--branch必须是refs/heads/开头的，后边跟分支名称-->
+                    <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> &lt;!&ndash;编译出来的的target/mvn-repo就是可以安装在仓库里的格式&ndash;&gt;
+                    <branch>refs/heads/repository</branch>  &lt;!&ndash;branch必须是refs/heads/开头的，后边跟分支名称&ndash;&gt;
                     <merge>true</merge>
                     <includes>
                         <include>**/*</include>
                     </includes>
-                    <repositoryName>maven-repo</repositoryName> <!--对应github上创建的仓库名称 name-->
-                    <repositoryOwner>autumn</repositoryOwner> <!--github 仓库所有者即登录用户名-->
+                    <repositoryName>maven-repo</repositoryName> &lt;!&ndash;对应github上创建的仓库名称 name&ndash;&gt;
+                    <repositoryOwner>autumn</repositoryOwner> &lt;!&ndash;github 仓库所有者即登录用户名&ndash;&gt;
                 </configuration>
                 <executions>
                     <execution>
@@ -103,21 +105,29 @@
                         <phase>deploy</phase>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
 
         </plugins>
+
     </pluginManagement>
     </build>
 
-    <!--使用者需要 - 引入仓库-->
     <repositories>
-        <repository>
-            <id>maven-repo-master</id>
-            <url>https://raw.github.com/AutKevin/maven-repo/master/</url>
+        <!--引入github仓库，失效-->
+        <!--<repository>
+            <id>github</id>
+            <url>https://raw.github.com/AutKevin/maven-repo/repo/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
+        </repository>-->
+
+        <!--引入tomcat的仓库,通过setting - deployment发布,tools-deployment上传-->
+        <repository>
+            <id>tomcata-repository</id>
+            <url>http://52zt.info:88/mvn</url>
         </repository>
+
     </repositories>
 </project>

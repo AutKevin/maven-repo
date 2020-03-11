@@ -15,13 +15,6 @@
     </properties>
 
     <dependencies>
-        <!-- 发布到服务器插件的依赖包 -->
-        <!--<dependency>
-            <groupId>com.github.github</groupId>
-            <artifactId>site-maven-plugin</artifactId>
-            <version>0.12</version>
-            <type>maven-plugin</type>
-        </dependency>-->
         <!--slf4j-->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -68,75 +61,50 @@
     </dependencies>
 
     <build>
-    <pluginManagement>
-        <plugins>
-            <!--本地仓库插件-->
-            <!--<plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.1</version>
-                <configuration>
-                    &lt;!&ndash;编译的生成位置在target/mvn-repo&ndash;&gt;
-                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
-                </configuration>
-            </plugin>-->
-            <!--发布到服务器插件,需要依赖上面的部分-->
-            <!--查看aliyun的仓库https://maven.aliyun.com/mvn/search,发现需要依赖包-->
-            <!--<plugin>
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <version >0.12</version>
-                <configuration>
-                    <message >Maven artifacts for ${project.version}</message>
-                    <noJekyll>true</noJekyll>
-                    <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> &lt;!&ndash;编译出来的的target/mvn-repo就是可以安装在仓库里的格式&ndash;&gt;
-                    <branch>refs/heads/repository</branch>  &lt;!&ndash;branch必须是refs/heads/开头的，后边跟分支名称&ndash;&gt;
-                    <merge>true</merge>
-                    <includes>
-                        <include>**/*</include>
-                    </includes>
-                    <repositoryName>maven-repo</repositoryName> &lt;!&ndash;对应github上创建的仓库名称 name&ndash;&gt;
-                    <repositoryOwner>autumn</repositoryOwner> &lt;!&ndash;github 仓库所有者即登录用户名&ndash;&gt;
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                        <phase>deploy</phase>
-                    </execution>
-                </executions>
-            </plugin>-->
-
-        </plugins>
-
-    </pluginManagement>
+        <pluginManagement>
+            <plugins>
+                <!--本地仓库插件-->
+                <!--<plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.1</version>
+                    <configuration>
+                        &lt;!&ndash;编译的生成位置在target/mvn-repo&ndash;&gt;
+                        <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+                    </configuration>
+                </plugin>-->
+            </plugins>
+        </pluginManagement>
     </build>
 
+    <!--发布到github package,一定要注释掉maven-deploy-plugin插件-->
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
+            <id>github</id>  <!--这里要和后台的server的id一致-->
+            <name>GitHub AutKevin Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/AutKevin/maven-repo</url>
         </repository>
     </distributionManagement>
 
 
     <repositories>
-        <!--引入github仓库，失效-->
-        <!--<repository>
+        <!--引入github package,如果mvn的setting.xml中配置了profile可以不配置这个-->
+        <!--
+        <repository>
             <id>github</id>
             <url>https://raw.github.com/AutKevin/maven-repo/repo/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
-        </repository>-->
+        </repository>
+        -->
 
         <!--引入tomcat的仓库,通过setting - deployment发布,tools-deployment上传-->
+        <!--
         <repository>
             <id>tomcata-repository</id>
             <url>http://52zt.info:88/mvn</url>
         </repository>
-
+        -->
     </repositories>
 </project>

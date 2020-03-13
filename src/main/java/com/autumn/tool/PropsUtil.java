@@ -121,23 +121,23 @@ public class PropsUtil {
     public static boolean getBoolean(Properties props,String key,Boolean defaultValue){
         boolean value = defaultValue;
         if (props.containsKey(key)){
-            value = CastUtil.castBoolean(props.getProperty(key));
+            value = CastUtil.castBoolean(props.getProperty(key).trim());
         }
         return value;
     }
 
     public static void main(String[] args) throws IOException {
         /*获取文件路径*/
-        String path = PropsUtil.class.getClassLoader().getResource("config.properties").getPath();
+        String path = PropsUtil.class.getClassLoader().getResource("dbconfig.properties").getPath();
         System.out.println(path);
         /*手动加载properties文件*/
-        /*InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties");
+        /*InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("dbconfig.properties");
         Properties properties = new Properties();
         properties.load(is);
         String val = getString(properties,"jdbc.driver");
         System.out.println(val);*/
         /*测试工具类加载properties文件*/
-        Properties properties = loadProps("config.properties");
+        Properties properties = loadProps("dbconfig.properties");
         String val = getString(properties,"jdbc.driver");
         System.out.println(val);
         /*测试日志*/

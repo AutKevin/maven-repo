@@ -12,8 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,21 +26,23 @@ import java.util.Properties;
 public class DBHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(DBHelper.class);
 
-    private static final String DRIVER;
-    private static final String URL;
-    private static final String USERNAME;
-    private static final String PASSWORD;
+
+    private static String DRIVER;
+    private static String URL;
+    private static String USERNAME;
+    private static String PASSWORD;
 
     //Apache commons DbUtils
-    private static final QueryRunner QUERY_RUNNER = new QueryRunner();
+    private static QueryRunner QUERY_RUNNER = new QueryRunner();
     /*数据库连接池*/
-    private static final ThreadLocal<Connection> CONNECTION_HOLDER;
-    private static final BasicDataSource DATA_SOURCE;
+    private static ThreadLocal<Connection> CONNECTION_HOLDER;
+    private static BasicDataSource DATA_SOURCE;
+
     /**
-     * 静态代码块在类加载时运行
+     * 静态代码块在类加载时运行,默认配置文件为dbconfig.properties,需要从新自定义配置文件名需要使用构造函数
      */
     static{
-        Properties conf = PropsUtil.loadProps("config.properties");
+        Properties conf = PropsUtil.loadProps("dbconfig.properties");
         DRIVER = conf.getProperty("jdbc.driver");
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
@@ -61,6 +62,26 @@ public class DBHelper {
             //e.printStackTrace();
             LOGGER.error("can not load jdbc driver",e);
         }*/
+    }
+
+    /**
+     * 初始化DBhelp
+     * @param dbConfigPath 参数为DB配置文件,不配置默认用静态代码块的config.properties
+     */
+    public DBHelper(String dbConfigPath) {
+        Properties conf = PropsUtil.loadProps(dbConfigPath);
+        DRIVER = conf.getProperty("jdbc.driver");
+        URL = conf.getProperty("jdbc.url");
+        USERNAME = conf.getProperty("jdbc.username");
+        PASSWORD = conf.getProperty("jdbc.password");
+
+        //数据库连接池
+        CONNECTION_HOLDER = new ThreadLocal<Connection>();
+        DATA_SOURCE = new BasicDataSource();
+        DATA_SOURCE.setDriverClassName(DRIVER);
+        DATA_SOURCE.setUrl(URL);
+        DATA_SOURCE.setUsername(USERNAME);
+        DATA_SOURCE.setPassword(PASSWORD);
     }
 
     /**
@@ -93,7 +114,8 @@ public class DBHelper {
      * 如果用数据库连接池，要注释此处
      * @param conn
      */
-    /* public static void closeConnection(Connection conn){
+     public static void closeConnection(Connection conn){
+        CONNECTION_HOLDER.remove();
         if (conn!=null){
             try {
                 conn.close();
@@ -102,8 +124,45 @@ public class DBHelper {
                 LOGGER.error("close connection failure",e);
             }
         }
-    }*/
+     }
 
+    /**
+     * 关闭所有资源
+     */
+    public static void closeAll(ResultSet resultSet, PreparedStatement preparedStatement, Connection connnection, CallableStatement callableStatement) {
+        // 关闭结果集对象
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        // 关闭PreparedStatement对象
+        if (preparedStatement != null) {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        // 关闭CallableStatement 对象
+        if (callableStatement != null) {
+            try {
+                callableStatement.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        // 关闭Connection 对象
+        if (connnection != null) {
+            try {
+                connnection.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
     /**
      * 查询实体列表
@@ -114,6 +173,7 @@ public class DBHelper {
      * @return
      */
     public static <T> List<T> queryEntityList(Class<T> entityClass, String sql, Object... params){
+        CONNECTION_HOLDER.remove();
         List<T> entityList;
         Connection conn = getConnection();
         try {
@@ -346,5 +406,13 @@ public class DBHelper {
                 CONNECTION_HOLDER.remove();   //从容器中移除连接
             }
         }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        //重新自定义配置文件需要new一下用构造函数覆盖静态代码块的初始值
+        DBHelper dbHelper = new DBHelper("GenModuleConfig.properties");
+        //直接获取默认的配置文件为dbconfig.properties
+        Connection connection = DBHelper.getConnection();
+        System.out.println(connection.getCatalog());
     }
 }

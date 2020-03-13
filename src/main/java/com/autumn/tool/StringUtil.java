@@ -24,4 +24,20 @@ public class StringUtil {
     public static boolean isNotEmpty(String str){
         return !isEmpty(str);
     }
+
+    /**
+     * 功能：将输入字符串的首字母改成大写
+     * @param str
+     * @return
+     */
+    public static String upFirstChar(String str) {
+        if (str!=null&&str.length()>0) {
+            char[] ch = str.toCharArray();
+            if(ch[0] >= 'a' && ch[0] <= 'z'){
+                ch[0] = (char)(ch[0] - 32);
+            }
+            return new String(ch);
+        }
+        return null;
+    }
 }

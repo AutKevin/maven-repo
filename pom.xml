@@ -6,7 +6,7 @@
 
     <groupId>com.autumn</groupId>
     <artifactId>aeo-tool</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -47,6 +47,11 @@
             <version>1.6</version>
         </dependency>
         <!--Apache DBCP连接池-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.48</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>

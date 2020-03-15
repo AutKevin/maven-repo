@@ -44,22 +44,22 @@ public class HttpUtil {
             //conn.setRequestProperty("Cookie","mstuid=1565660612968_2360; XM_agreement_sure=1; XM_agreement=0; xm_user_www_num=0;");
             //conn.setRequestProperty("Content-Encoding","gzip");
             //conn.setRequestProperty("Referer", "http://www.mi.com/index.jsp");
-            if (CollectionUtil.isNotEmpty(requestProperty)){
+            if (!(requestProperty == null || requestProperty.isEmpty())){
                 for (Map.Entry<String,String> entry:requestProperty.entrySet()){
                     conn.setRequestProperty(entry.getKey(),entry.getValue());
                 }
             }
 
-            if (StringUtil.isNotEmpty(params)) {
+            if (!(params == null || params.trim().length() == 0)) {
                 OutputStream outStream = conn.getOutputStream();// 返回写入到此连接的输出流
                 outStream.write(params.getBytes());
                 outStream.close();// 关闭流
             }
 
-            if (StringUtil.isEmpty(transencode)){
+            if (transencode == null || transencode.trim().length() == 0){
                 transencode = "iso-8859-1";
             }
-            if (StringUtil.isEmpty(decode)){
+            if (decode == null || decode.trim().length() == 0){
                 decode = "utf-8";
             }
 
@@ -118,13 +118,13 @@ public class HttpUtil {
             //conn.setRequestProperty("Cookie","mstuid=1565660612968_2360; XM_agreement_sure=1; XM_agreement=0; xm_user_www_num=0;");
             //conn.setRequestProperty("Content-Encoding","gzip");
             //conn.setRequestProperty("Referer", "http://www.mi.com/index.jsp");
-            if (CollectionUtil.isNotEmpty(requestProperty)){
+            if (!(requestProperty == null || requestProperty.isEmpty())){
                 for (Map.Entry<String,String> entry:requestProperty.entrySet()){
                     conn.setRequestProperty(entry.getKey(),entry.getValue());
                 }
             }
 
-            if (StringUtil.isNotEmpty(params)) {
+            if (!(params == null || params.trim().length() == 0)) {
                 OutputStream outStream = conn.getOutputStream();// 返回写入到此连接的输出流
                 outStream.write(params.getBytes());
                 outStream.close();// 关闭流

@@ -1,4 +1,5 @@
 *.iml
+/classes
 /.idea/*
 /.idea/*.xml
 /target

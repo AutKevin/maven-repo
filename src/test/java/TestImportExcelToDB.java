@@ -3,7 +3,7 @@ import com.autumn.xls.ImportExcelToDB;
 /**
  * Created by Administrator on 2020/3/15.
  */
-public class ImportExcelToDB {
+public class TestImportExcelToDB {
 
     public static void main(String[] args) {
         String filePath = "D:\\IDEAWorkspaces\\tbk\\classes\\artifacts\\tbk_war_exploded\\ExcelDownload\\b.xls";

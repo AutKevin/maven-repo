@@ -173,7 +173,6 @@ public class DBHelper {
      * @return
      */
     public static <T> List<T> queryEntityList(Class<T> entityClass, String sql, Object... params){
-        CONNECTION_HOLDER.remove();
         List<T> entityList;
         Connection conn = getConnection();
         try {
@@ -410,9 +409,20 @@ public class DBHelper {
 
     public static void main(String[] args) throws SQLException {
         //重新自定义配置文件需要new一下用构造函数覆盖静态代码块的初始值
-        DBHelper dbHelper = new DBHelper("GenModuleConfig.properties");
+        DBHelper dbHelper = new DBHelper("dbconfig.properties");
         //直接获取默认的配置文件为dbconfig.properties
         Connection connection = DBHelper.getConnection();
-        System.out.println(connection.getCatalog());
+        System.out.println(connection.toString());
+        Connection connection1 = DBHelper.getConnection();
+        System.out.println(connection1.toString());
+        /*ThreadLocal保证一个线程只实例化一个Connection,再次请求会再实例化一个Connection*/
+        new Thread(){
+            @Override
+            public void run() {
+                Connection connection_t1 = DBHelper.getConnection();
+                System.out.println(connection_t1.toString());
+            }
+        }.start();
+        //System.out.println(connection.getCatalog());
     }
 }

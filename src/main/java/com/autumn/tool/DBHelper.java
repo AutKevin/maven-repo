@@ -31,6 +31,9 @@ public class DBHelper {
     private static String URL;
     private static String USERNAME;
     private static String PASSWORD;
+    private static String MAXWAITSTR;
+    private static long MAXWAIT;
+
 
     //Apache commons DbUtils
     private static QueryRunner QUERY_RUNNER = new QueryRunner();
@@ -47,6 +50,13 @@ public class DBHelper {
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
         PASSWORD = conf.getProperty("jdbc.password");
+        MAXWAITSTR = conf.getProperty("jdbc.maxwait");
+        if (MAXWAITSTR==null||MAXWAITSTR.trim().length()==0){
+            MAXWAIT = 200000;
+        }else {
+            MAXWAIT = Long.parseLong(MAXWAITSTR);
+        }
+
 
         //数据库连接池
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
@@ -55,6 +65,7 @@ public class DBHelper {
         DATA_SOURCE.setUrl(URL);
         DATA_SOURCE.setUsername(USERNAME);
         DATA_SOURCE.setPassword(PASSWORD);
+        DATA_SOURCE.setMaxWaitMillis(MAXWAIT);
         /*使用连接池就不需要jdbc加载驱动了*/
         /*try {
             Class.forName(DRIVER);
@@ -74,6 +85,12 @@ public class DBHelper {
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
         PASSWORD = conf.getProperty("jdbc.password");
+        MAXWAITSTR = conf.getProperty("jdbc.maxwait");
+        if (MAXWAITSTR==null||MAXWAITSTR.trim().length()==0){
+            MAXWAIT = 200000;
+        }else {
+            MAXWAIT = Long.parseLong(MAXWAITSTR);
+        }
 
         //数据库连接池
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
@@ -82,6 +99,7 @@ public class DBHelper {
         DATA_SOURCE.setUrl(URL);
         DATA_SOURCE.setUsername(USERNAME);
         DATA_SOURCE.setPassword(PASSWORD);
+        DATA_SOURCE.setMaxWaitMillis(MAXWAIT);
     }
 
     /**
@@ -106,6 +124,7 @@ public class DBHelper {
                 CONNECTION_HOLDER.set(conn);
             }
         }
+        System.out.println(Thread.currentThread()+"线程获取Connection: "+conn.toString());
         return conn;
     }
 
@@ -409,7 +428,7 @@ public class DBHelper {
 
     public static void main(String[] args) throws SQLException {
         //重新自定义配置文件需要new一下用构造函数覆盖静态代码块的初始值
-        DBHelper dbHelper = new DBHelper("dbconfig.properties");
+        //DBHelper dbHelper = new DBHelper("dbconfig.properties");
         //直接获取默认的配置文件为dbconfig.properties
         Connection connection = DBHelper.getConnection();
         System.out.println(connection.toString());

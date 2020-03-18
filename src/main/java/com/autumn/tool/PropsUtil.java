@@ -102,6 +102,31 @@ public class PropsUtil {
     }
 
     /**
+     * 获取数值型属性（默认值为0）
+     * @param props
+     * @param key
+     * @return
+     */
+    public static long getLong(Properties props,String key){
+        return getLong(props,key,0);
+    }
+
+    /**
+     * 获取数值型属性（可指定默认值）
+     * @param props
+     * @param key
+     * @param defaultValue
+     * @return
+     */
+    public static long getLong(Properties props,String key,long defaultValue){
+        long value = defaultValue;
+        if (props.containsKey(key)){
+            value = CastUtil.castLong(props.getProperty(key));
+        }
+        return value;
+    }
+
+    /**
      * 获取布尔型属性（默认值为false）
      * @param props
      * @param key

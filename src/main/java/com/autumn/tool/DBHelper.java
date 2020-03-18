@@ -21,25 +21,32 @@ import java.util.Properties;
 /**
  * @program: DBHelper
  * @description: 数据库操作类
+ * 使用DBCP连接池
  * @Author 秋雨
  **/
 public class DBHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(DBHelper.class);
 
-
     private static String DRIVER;
     private static String URL;
     private static String USERNAME;
     private static String PASSWORD;
-    private static String MAXWAITSTR;
+    private static int InitialSize;
+    private static int MinIdle;
+    private static int MaxActive;
     private static long MAXWAIT;
-
+    private static String ValidationQuery;   //验证使用的SQL语句
+    private static long MinEvictableIdleTimeMillis;    //池中的连接空闲n分钟后被回收
+    private static long TimeBetweenEvictionRunsMillis;  //每n秒运行一次空闲连接回收器
+    private static boolean TestOnBorrow;  //借出连接时不要测试，否则很影响性能
+    private static boolean TestWhileIdle;
 
     //Apache commons DbUtils
     private static QueryRunner QUERY_RUNNER = new QueryRunner();
     /*数据库连接池*/
-    private static ThreadLocal<Connection> CONNECTION_HOLDER;
     private static BasicDataSource DATA_SOURCE;
+    /*ThreadLocal使变量隔离,防止多个线程调用已经关闭的Connection,但是Tomcat用到了线程池,多次请求可能用到同一个线程,所以调用方法结束时要remove掉并关闭连接*/
+    private static ThreadLocal<Connection> CONNECTION_HOLDER;
 
     /**
      * 静态代码块在类加载时运行,默认配置文件为dbconfig.properties,需要从新自定义配置文件名需要使用构造函数
@@ -50,22 +57,47 @@ public class DBHelper {
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
         PASSWORD = conf.getProperty("jdbc.password");
-        MAXWAITSTR = conf.getProperty("jdbc.maxwait");
-        if (MAXWAITSTR==null||MAXWAITSTR.trim().length()==0){
-            MAXWAIT = 200000;
-        }else {
-            MAXWAIT = Long.parseLong(MAXWAITSTR);
-        }
+        String initialSizeStr = conf.getProperty("initialSize");
+        InitialSize = PropsUtil.getInt(conf,initialSizeStr,10);
+        String minIdle = conf.getProperty("minIdle");
+        MinIdle = PropsUtil.getInt(conf,minIdle,5);
+        String maxActive = conf.getProperty("maxActive");
+        MaxActive = PropsUtil.getInt(conf,maxActive,50);
+        String maxwaitStr = conf.getProperty("maxWait");
+        MAXWAIT = PropsUtil.getLong(conf,maxwaitStr,200000);
+
+        ValidationQuery = conf.getProperty("validationQuery");
+
+        String minEvictableIdleTimeMillis = conf.getProperty("minEvictableIdleTimeMillis");
+        MinEvictableIdleTimeMillis = PropsUtil.getLong(conf,minEvictableIdleTimeMillis,1800000);
+
+        String timeBetweenEvictionRunsMillis = conf.getProperty("timeBetweenEvictionRunsMillis");
+        TimeBetweenEvictionRunsMillis = PropsUtil.getLong(conf,timeBetweenEvictionRunsMillis,30000);
+
+        String testOnBorrow = conf.getProperty("testOnBorrow");
+        TestOnBorrow = PropsUtil.getBoolean(conf,testOnBorrow,false);
+        String testWhileIdle = conf.getProperty("testWhileIdle");
+        TestWhileIdle = PropsUtil.getBoolean(conf,testWhileIdle,true);
 
 
-        //数据库连接池
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
+        //数据库连接池
         DATA_SOURCE = new BasicDataSource();
         DATA_SOURCE.setDriverClassName(DRIVER);
         DATA_SOURCE.setUrl(URL);
         DATA_SOURCE.setUsername(USERNAME);
         DATA_SOURCE.setPassword(PASSWORD);
+        DATA_SOURCE.setInitialSize(InitialSize);
+        DATA_SOURCE.setMinIdle(MinIdle);
+        DATA_SOURCE.setMaxTotal(MaxActive);
         DATA_SOURCE.setMaxWaitMillis(MAXWAIT);
+
+        DATA_SOURCE.setValidationQuery(ValidationQuery);
+        DATA_SOURCE.setMinEvictableIdleTimeMillis(MinEvictableIdleTimeMillis);
+        DATA_SOURCE.setTimeBetweenEvictionRunsMillis(TimeBetweenEvictionRunsMillis);
+        DATA_SOURCE.setTestOnBorrow(TestOnBorrow);
+        DATA_SOURCE.setTestWhileIdle(TestWhileIdle);
+
         /*使用连接池就不需要jdbc加载驱动了*/
         /*try {
             Class.forName(DRIVER);
@@ -85,21 +117,46 @@ public class DBHelper {
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
         PASSWORD = conf.getProperty("jdbc.password");
-        MAXWAITSTR = conf.getProperty("jdbc.maxwait");
-        if (MAXWAITSTR==null||MAXWAITSTR.trim().length()==0){
-            MAXWAIT = 200000;
-        }else {
-            MAXWAIT = Long.parseLong(MAXWAITSTR);
-        }
+        String initialSizeStr = conf.getProperty("initialSize");
+        InitialSize = PropsUtil.getInt(conf,initialSizeStr,10);
+        String minIdle = conf.getProperty("minIdle");
+        MinIdle = PropsUtil.getInt(conf,minIdle,5);
+        String maxActive = conf.getProperty("maxActive");
+        MaxActive = PropsUtil.getInt(conf,maxActive,50);
+        String maxwaitStr = conf.getProperty("maxWait");
+        MAXWAIT = PropsUtil.getLong(conf,maxwaitStr,200000);
 
-        //数据库连接池
+        ValidationQuery = conf.getProperty("validationQuery");
+
+        String minEvictableIdleTimeMillis = conf.getProperty("minEvictableIdleTimeMillis");
+        MinEvictableIdleTimeMillis = PropsUtil.getLong(conf,minEvictableIdleTimeMillis,1800000);
+
+        String timeBetweenEvictionRunsMillis = conf.getProperty("timeBetweenEvictionRunsMillis");
+        TimeBetweenEvictionRunsMillis = PropsUtil.getLong(conf,timeBetweenEvictionRunsMillis,30000);
+
+        String testOnBorrow = conf.getProperty("testOnBorrow");
+        TestOnBorrow = PropsUtil.getBoolean(conf,testOnBorrow,false);
+        String testWhileIdle = conf.getProperty("testWhileIdle");
+        TestWhileIdle = PropsUtil.getBoolean(conf,testWhileIdle,true);
+
+
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
+        //数据库连接池
         DATA_SOURCE = new BasicDataSource();
         DATA_SOURCE.setDriverClassName(DRIVER);
         DATA_SOURCE.setUrl(URL);
         DATA_SOURCE.setUsername(USERNAME);
         DATA_SOURCE.setPassword(PASSWORD);
+        DATA_SOURCE.setInitialSize(InitialSize);
+        DATA_SOURCE.setMinIdle(MinIdle);
+        DATA_SOURCE.setMaxTotal(MaxActive);
         DATA_SOURCE.setMaxWaitMillis(MAXWAIT);
+
+        DATA_SOURCE.setValidationQuery(ValidationQuery);
+        DATA_SOURCE.setMinEvictableIdleTimeMillis(MinEvictableIdleTimeMillis);
+        DATA_SOURCE.setTimeBetweenEvictionRunsMillis(TimeBetweenEvictionRunsMillis);
+        DATA_SOURCE.setTestOnBorrow(TestOnBorrow);
+        DATA_SOURCE.setTestWhileIdle(TestWhileIdle);
     }
 
     /**
@@ -108,8 +165,8 @@ public class DBHelper {
      */
     public static Connection getConnection(){
         Connection conn = null;
-        conn = CONNECTION_HOLDER.get();
-
+        /*使用连接池后,不需要ThreadLocal了(ThreadLocal为了解决让每个线程有自己的连接而不是共享一个连接的问题)*/
+        //conn = CONNECTION_HOLDER.get();
         if (conn==null){  //当从连接池中获取的connection为null时新建一个Connection
             try {
                 /*JDBC获取连接*/
@@ -124,17 +181,17 @@ public class DBHelper {
                 CONNECTION_HOLDER.set(conn);
             }
         }
-        System.out.println(Thread.currentThread()+"线程获取Connection: "+conn.toString());
         return conn;
     }
 
     /**
      * 关闭数据库连接
      * 如果用数据库连接池，要注释此处
-     * @param conn
      */
-     public static void closeConnection(Connection conn){
-        CONNECTION_HOLDER.remove();
+     public static void closeConnection() throws SQLException {
+         Connection conn = CONNECTION_HOLDER.get();
+         CONNECTION_HOLDER.remove();
+
         if (conn!=null){
             try {
                 conn.close();

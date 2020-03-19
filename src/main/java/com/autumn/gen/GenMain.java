@@ -74,7 +74,7 @@ public class GenMain {
         List<FieldMeta> fmls = new ArrayList<FieldMeta>();
         String sql= "select * from "+tableName;
         try {
-            DBHelper dbHelper = new DBHelper("GenModuleConfig.properties");
+            DBHelper.loadConfig("GenModuleConfig.properties");
             con= DBHelper.getConnection();
             dbmd = con.getMetaData();
             rs = dbmd.getColumns(con.getCatalog(), null, tableName, null);

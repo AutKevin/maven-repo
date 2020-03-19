@@ -74,7 +74,7 @@ public class GenEntityFile {
         PreparedStatement ps = null;
         ResultSet rs =null;
 
-        DBHelper dbHelper = new DBHelper("GenModuleConfig.properties");
+        DBHelper.loadConfig("GenModuleConfig.properties");
         con = DBHelper.getConnection();
         String sql = "show tables";
         try {

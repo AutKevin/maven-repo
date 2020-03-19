@@ -41,6 +41,12 @@ public class DBHelper {
     private static boolean TestOnBorrow;  //借出连接时不要测试，否则很影响性能
     private static boolean TestWhileIdle;
 
+    private static boolean RemoveAbandonedOnMaintenance;
+    private static boolean RemoveAbandonedOnBorrow;
+    private static int RemoveAbandonedTimeout;
+
+
+
     //Apache commons DbUtils
     private static QueryRunner QUERY_RUNNER = new QueryRunner();
     /*数据库连接池*/
@@ -57,14 +63,14 @@ public class DBHelper {
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
         PASSWORD = conf.getProperty("jdbc.password");
-        String initialSizeStr = conf.getProperty("initialSize");
-        InitialSize = PropsUtil.getInt(conf,initialSizeStr,10);
+        String initialSize = conf.getProperty("initialSize");
+        InitialSize = PropsUtil.getInt(conf,initialSize,10);
         String minIdle = conf.getProperty("minIdle");
         MinIdle = PropsUtil.getInt(conf,minIdle,5);
         String maxActive = conf.getProperty("maxActive");
         MaxActive = PropsUtil.getInt(conf,maxActive,50);
-        String maxwaitStr = conf.getProperty("maxWait");
-        MAXWAIT = PropsUtil.getLong(conf,maxwaitStr,200000);
+        String maxwait = conf.getProperty("maxWait");
+        MAXWAIT = PropsUtil.getLong(conf,maxwait,200000);
 
         ValidationQuery = conf.getProperty("validationQuery");
 
@@ -79,6 +85,12 @@ public class DBHelper {
         String testWhileIdle = conf.getProperty("testWhileIdle");
         TestWhileIdle = PropsUtil.getBoolean(conf,testWhileIdle,true);
 
+        String removeAbandonedOnMaintenance = conf.getProperty("removeAbandonedOnMaintenance");
+        RemoveAbandonedOnMaintenance = PropsUtil.getBoolean(conf,removeAbandonedOnMaintenance,true);
+        String removeAbandonedOnBorrow = conf.getProperty("removeAbandonedOnBorrow");
+        RemoveAbandonedOnBorrow = PropsUtil.getBoolean(conf,removeAbandonedOnBorrow,true);
+        String removeAbandonedTimeoutStr = conf.getProperty("removeAbandonedTimeout");
+        RemoveAbandonedTimeout = PropsUtil.getInt(conf,removeAbandonedTimeoutStr,30);
 
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
         //数据库连接池
@@ -97,7 +109,9 @@ public class DBHelper {
         DATA_SOURCE.setTimeBetweenEvictionRunsMillis(TimeBetweenEvictionRunsMillis);
         DATA_SOURCE.setTestOnBorrow(TestOnBorrow);
         DATA_SOURCE.setTestWhileIdle(TestWhileIdle);
-
+        DATA_SOURCE.setRemoveAbandonedOnBorrow(RemoveAbandonedOnBorrow);
+        DATA_SOURCE.setRemoveAbandonedOnMaintenance(RemoveAbandonedOnMaintenance);
+        DATA_SOURCE.setRemoveAbandonedTimeout(RemoveAbandonedTimeout);
         /*使用连接池就不需要jdbc加载驱动了*/
         /*try {
             Class.forName(DRIVER);
@@ -111,20 +125,20 @@ public class DBHelper {
      * 初始化DBhelp
      * @param dbConfigPath 参数为DB配置文件,不配置默认用静态代码块的config.properties
      */
-    public DBHelper(String dbConfigPath) {
+    public static Properties loadConfig(String dbConfigPath) {
         Properties conf = PropsUtil.loadProps(dbConfigPath);
         DRIVER = conf.getProperty("jdbc.driver");
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
         PASSWORD = conf.getProperty("jdbc.password");
-        String initialSizeStr = conf.getProperty("initialSize");
-        InitialSize = PropsUtil.getInt(conf,initialSizeStr,10);
+        String initialSize = conf.getProperty("initialSize");
+        InitialSize = PropsUtil.getInt(conf,initialSize,10);
         String minIdle = conf.getProperty("minIdle");
         MinIdle = PropsUtil.getInt(conf,minIdle,5);
         String maxActive = conf.getProperty("maxActive");
         MaxActive = PropsUtil.getInt(conf,maxActive,50);
-        String maxwaitStr = conf.getProperty("maxWait");
-        MAXWAIT = PropsUtil.getLong(conf,maxwaitStr,200000);
+        String maxwait = conf.getProperty("maxWait");
+        MAXWAIT = PropsUtil.getLong(conf,maxwait,200000);
 
         ValidationQuery = conf.getProperty("validationQuery");
 
@@ -139,6 +153,12 @@ public class DBHelper {
         String testWhileIdle = conf.getProperty("testWhileIdle");
         TestWhileIdle = PropsUtil.getBoolean(conf,testWhileIdle,true);
 
+        String removeAbandonedOnMaintenance = conf.getProperty("removeAbandonedOnMaintenance");
+        RemoveAbandonedOnMaintenance = PropsUtil.getBoolean(conf,removeAbandonedOnMaintenance,true);
+        String removeAbandonedOnBorrow = conf.getProperty("removeAbandonedOnBorrow");
+        RemoveAbandonedOnBorrow = PropsUtil.getBoolean(conf,removeAbandonedOnBorrow,true);
+        String removeAbandonedTimeoutStr = conf.getProperty("removeAbandonedTimeout");
+        RemoveAbandonedTimeout = PropsUtil.getInt(conf,removeAbandonedTimeoutStr,30);
 
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
         //数据库连接池
@@ -157,6 +177,10 @@ public class DBHelper {
         DATA_SOURCE.setTimeBetweenEvictionRunsMillis(TimeBetweenEvictionRunsMillis);
         DATA_SOURCE.setTestOnBorrow(TestOnBorrow);
         DATA_SOURCE.setTestWhileIdle(TestWhileIdle);
+        DATA_SOURCE.setRemoveAbandonedOnBorrow(RemoveAbandonedOnBorrow);
+        DATA_SOURCE.setRemoveAbandonedOnMaintenance(RemoveAbandonedOnMaintenance);
+        DATA_SOURCE.setRemoveAbandonedTimeout(RemoveAbandonedTimeout);
+        return conf;
     }
 
     /**
@@ -178,7 +202,7 @@ public class DBHelper {
                 LOGGER.error("get connection failure",e);
             } finally {
                 /*数据库连接池，新建的情况要把新建的connection放入到池中*/
-                CONNECTION_HOLDER.set(conn);
+                //CONNECTION_HOLDER.set(conn);
             }
         }
         return conn;

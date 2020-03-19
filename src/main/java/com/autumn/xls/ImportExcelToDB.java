@@ -87,7 +87,7 @@ public class ImportExcelToDB {
      * @return
      */
     public static Integer insertEachRow(String filePath, int sheetNo, int headLine,String dbProp,String sql) {
-        DBHelper dbHelper = new DBHelper(dbProp);
+        DBHelper.loadConfig(dbProp);
         int resultRows = 0;
         Workbook wb = null;
         StringBuffer stringBuffer = null;

@@ -63,34 +63,23 @@ public class DBHelper {
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
         PASSWORD = conf.getProperty("jdbc.password");
-        String initialSize = conf.getProperty("initialSize");
-        InitialSize = PropsUtil.getInt(conf,initialSize,10);
-        String minIdle = conf.getProperty("minIdle");
-        MinIdle = PropsUtil.getInt(conf,minIdle,5);
-        String maxActive = conf.getProperty("maxActive");
-        MaxActive = PropsUtil.getInt(conf,maxActive,50);
-        String maxwait = conf.getProperty("maxWait");
-        MAXWAIT = PropsUtil.getLong(conf,maxwait,200000);
+        InitialSize = PropsUtil.getInt(conf,"initialSize",10);
+        MinIdle = PropsUtil.getInt(conf,"minIdle",5);
+        MaxActive = PropsUtil.getInt(conf,"maxActive",50);
+        MAXWAIT = PropsUtil.getLong(conf,"maxWait",200000);
 
         ValidationQuery = conf.getProperty("validationQuery");
 
-        String minEvictableIdleTimeMillis = conf.getProperty("minEvictableIdleTimeMillis");
-        MinEvictableIdleTimeMillis = PropsUtil.getLong(conf,minEvictableIdleTimeMillis,1800000);
+        MinEvictableIdleTimeMillis = PropsUtil.getLong(conf,"minEvictableIdleTimeMillis",1800000);
 
-        String timeBetweenEvictionRunsMillis = conf.getProperty("timeBetweenEvictionRunsMillis");
-        TimeBetweenEvictionRunsMillis = PropsUtil.getLong(conf,timeBetweenEvictionRunsMillis,30000);
+        TimeBetweenEvictionRunsMillis = PropsUtil.getLong(conf,"timeBetweenEvictionRunsMillis",30000);
 
-        String testOnBorrow = conf.getProperty("testOnBorrow");
-        TestOnBorrow = PropsUtil.getBoolean(conf,testOnBorrow,false);
-        String testWhileIdle = conf.getProperty("testWhileIdle");
-        TestWhileIdle = PropsUtil.getBoolean(conf,testWhileIdle,true);
+        TestOnBorrow = PropsUtil.getBoolean(conf,"testOnBorrow",false);
+        TestWhileIdle = PropsUtil.getBoolean(conf,"testWhileIdle",true);
 
-        String removeAbandonedOnMaintenance = conf.getProperty("removeAbandonedOnMaintenance");
-        RemoveAbandonedOnMaintenance = PropsUtil.getBoolean(conf,removeAbandonedOnMaintenance,true);
-        String removeAbandonedOnBorrow = conf.getProperty("removeAbandonedOnBorrow");
-        RemoveAbandonedOnBorrow = PropsUtil.getBoolean(conf,removeAbandonedOnBorrow,true);
-        String removeAbandonedTimeoutStr = conf.getProperty("removeAbandonedTimeout");
-        RemoveAbandonedTimeout = PropsUtil.getInt(conf,removeAbandonedTimeoutStr,30);
+        RemoveAbandonedOnMaintenance = PropsUtil.getBoolean(conf,"removeAbandonedOnMaintenance",true);
+        RemoveAbandonedOnBorrow = PropsUtil.getBoolean(conf,"removeAbandonedOnBorrow",true);
+        RemoveAbandonedTimeout = PropsUtil.getInt(conf,"removeAbandonedTimeout",30);
 
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
         //数据库连接池
@@ -131,34 +120,23 @@ public class DBHelper {
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
         PASSWORD = conf.getProperty("jdbc.password");
-        String initialSize = conf.getProperty("initialSize");
-        InitialSize = PropsUtil.getInt(conf,initialSize,10);
-        String minIdle = conf.getProperty("minIdle");
-        MinIdle = PropsUtil.getInt(conf,minIdle,5);
-        String maxActive = conf.getProperty("maxActive");
-        MaxActive = PropsUtil.getInt(conf,maxActive,50);
-        String maxwait = conf.getProperty("maxWait");
-        MAXWAIT = PropsUtil.getLong(conf,maxwait,200000);
+        InitialSize = PropsUtil.getInt(conf,"initialSize",10);
+        MinIdle = PropsUtil.getInt(conf,"minIdle",5);
+        MaxActive = PropsUtil.getInt(conf,"maxActive",50);
+        MAXWAIT = PropsUtil.getLong(conf,"maxWait",200000);
 
         ValidationQuery = conf.getProperty("validationQuery");
 
-        String minEvictableIdleTimeMillis = conf.getProperty("minEvictableIdleTimeMillis");
-        MinEvictableIdleTimeMillis = PropsUtil.getLong(conf,minEvictableIdleTimeMillis,1800000);
+        MinEvictableIdleTimeMillis = PropsUtil.getLong(conf,"minEvictableIdleTimeMillis",1800000);
 
-        String timeBetweenEvictionRunsMillis = conf.getProperty("timeBetweenEvictionRunsMillis");
-        TimeBetweenEvictionRunsMillis = PropsUtil.getLong(conf,timeBetweenEvictionRunsMillis,30000);
+        TimeBetweenEvictionRunsMillis = PropsUtil.getLong(conf,"timeBetweenEvictionRunsMillis",30000);
 
-        String testOnBorrow = conf.getProperty("testOnBorrow");
-        TestOnBorrow = PropsUtil.getBoolean(conf,testOnBorrow,false);
-        String testWhileIdle = conf.getProperty("testWhileIdle");
-        TestWhileIdle = PropsUtil.getBoolean(conf,testWhileIdle,true);
+        TestOnBorrow = PropsUtil.getBoolean(conf,"testOnBorrow",false);
+        TestWhileIdle = PropsUtil.getBoolean(conf,"testWhileIdle",true);
 
-        String removeAbandonedOnMaintenance = conf.getProperty("removeAbandonedOnMaintenance");
-        RemoveAbandonedOnMaintenance = PropsUtil.getBoolean(conf,removeAbandonedOnMaintenance,true);
-        String removeAbandonedOnBorrow = conf.getProperty("removeAbandonedOnBorrow");
-        RemoveAbandonedOnBorrow = PropsUtil.getBoolean(conf,removeAbandonedOnBorrow,true);
-        String removeAbandonedTimeoutStr = conf.getProperty("removeAbandonedTimeout");
-        RemoveAbandonedTimeout = PropsUtil.getInt(conf,removeAbandonedTimeoutStr,30);
+        RemoveAbandonedOnMaintenance = PropsUtil.getBoolean(conf,"removeAbandonedOnMaintenance",true);
+        RemoveAbandonedOnBorrow = PropsUtil.getBoolean(conf,"removeAbandonedOnBorrow",true);
+        RemoveAbandonedTimeout = PropsUtil.getInt(conf,"removeAbandonedTimeout",30);
 
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
         //数据库连接池

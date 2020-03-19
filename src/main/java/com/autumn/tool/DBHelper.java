@@ -33,6 +33,7 @@ public class DBHelper {
     private static String PASSWORD;
     private static int InitialSize;
     private static int MinIdle;
+    private static int MaxIdle;
     private static int MaxActive;
     private static long MAXWAIT;
     private static String ValidationQuery;   //验证使用的SQL语句
@@ -65,6 +66,7 @@ public class DBHelper {
         PASSWORD = conf.getProperty("jdbc.password");
         InitialSize = PropsUtil.getInt(conf,"initialSize",10);
         MinIdle = PropsUtil.getInt(conf,"minIdle",5);
+        MaxIdle = PropsUtil.getInt(conf,"maxIdle",10);
         MaxActive = PropsUtil.getInt(conf,"maxActive",50);
         MAXWAIT = PropsUtil.getLong(conf,"maxWait",200000);
 
@@ -90,6 +92,7 @@ public class DBHelper {
         DATA_SOURCE.setPassword(PASSWORD);
         DATA_SOURCE.setInitialSize(InitialSize);
         DATA_SOURCE.setMinIdle(MinIdle);
+        DATA_SOURCE.setMaxIdle(MaxIdle);
         DATA_SOURCE.setMaxTotal(MaxActive);
         DATA_SOURCE.setMaxWaitMillis(MAXWAIT);
 
@@ -122,6 +125,7 @@ public class DBHelper {
         PASSWORD = conf.getProperty("jdbc.password");
         InitialSize = PropsUtil.getInt(conf,"initialSize",10);
         MinIdle = PropsUtil.getInt(conf,"minIdle",5);
+        MaxIdle = PropsUtil.getInt(conf,"maxIdle",10);
         MaxActive = PropsUtil.getInt(conf,"maxActive",50);
         MAXWAIT = PropsUtil.getLong(conf,"maxWait",200000);
 
@@ -147,6 +151,7 @@ public class DBHelper {
         DATA_SOURCE.setPassword(PASSWORD);
         DATA_SOURCE.setInitialSize(InitialSize);
         DATA_SOURCE.setMinIdle(MinIdle);
+        DATA_SOURCE.setMaxIdle(MaxIdle);
         DATA_SOURCE.setMaxTotal(MaxActive);
         DATA_SOURCE.setMaxWaitMillis(MAXWAIT);
 

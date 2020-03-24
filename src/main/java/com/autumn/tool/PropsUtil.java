@@ -6,9 +6,7 @@ package com.autumn.tool;/**
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -50,6 +48,44 @@ public class PropsUtil {
         }
         return props;
     }
+
+    /**
+     * 加载属性文件,存在汉字时使用这个
+     * @param fileName fileName一定要在class下面及java根目录或者resource跟目录下
+     * @param decode 解码编码 默认utf-8
+     * @return
+     */
+    public static Properties loadProps(String fileName,String decode){
+        Properties props = new Properties();   //一定要初始化
+        InputStream is = null;
+        if (decode == null || decode.trim().length()==0){
+            decode = "utf-8";
+        }
+        try {
+            //将资源文件加载为流
+            is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+            //is = PropsUtil.class.getClassLoader().getResourceAsStream(fileName);
+            BufferedReader bf = new BufferedReader(new InputStreamReader(is,decode));
+            props.load(bf);
+            if(is==null){
+                throw new FileNotFoundException(fileName+"file is not Found");
+            }
+        } catch (FileNotFoundException e) {
+            LOGGER.error("load properties file filure",e);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(is !=null){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    LOGGER.error("close input stream failure",e);
+                }
+            }
+        }
+        return props;
+    }
+
 
     /**
      * 获取字符型属性（默认值为空字符串）

@@ -83,7 +83,7 @@ public class DBHelper {
 
         RemoveAbandonedOnMaintenance = PropsUtil.getBoolean(conf,"removeAbandonedOnMaintenance",true);
         RemoveAbandonedOnBorrow = PropsUtil.getBoolean(conf,"removeAbandonedOnBorrow",true);
-        RemoveAbandonedTimeout = PropsUtil.getInt(conf,"removeAbandonedTimeout",30);
+        RemoveAbandonedTimeout = PropsUtil.getInt(conf,"removeAbandonedTimeout",3600);
 
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
         //数据库连接池
@@ -142,7 +142,7 @@ public class DBHelper {
 
         RemoveAbandonedOnMaintenance = PropsUtil.getBoolean(conf,"removeAbandonedOnMaintenance",true);
         RemoveAbandonedOnBorrow = PropsUtil.getBoolean(conf,"removeAbandonedOnBorrow",true);
-        RemoveAbandonedTimeout = PropsUtil.getInt(conf,"removeAbandonedTimeout",30);
+        RemoveAbandonedTimeout = PropsUtil.getInt(conf,"removeAbandonedTimeout",3600);
 
         CONNECTION_HOLDER = new ThreadLocal<Connection>();
         //数据库连接池

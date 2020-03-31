@@ -1,6 +1,7 @@
 package com.autumn.tool;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp2.PoolableConnection;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -52,6 +53,7 @@ public class DBHelper {
     private static QueryRunner QUERY_RUNNER = new QueryRunner();
     /*数据库连接池*/
     private static BasicDataSource DATA_SOURCE;
+
     /*ThreadLocal使变量隔离,防止多个线程调用已经关闭的Connection,但是Tomcat用到了线程池,多次请求可能用到同一个线程,所以调用方法结束时要remove掉并关闭连接*/
     private static ThreadLocal<Connection> CONNECTION_HOLDER;
 
@@ -173,7 +175,7 @@ public class DBHelper {
     public static Connection getConnection(){
         Connection conn = null;
         /*使用连接池后,不需要ThreadLocal了(ThreadLocal为了解决让每个线程有自己的连接而不是共享一个连接的问题)*/
-        //conn = CONNECTION_HOLDER.get();
+        conn = CONNECTION_HOLDER.get();
         if (conn==null){  //当从连接池中获取的connection为null时新建一个Connection
             try {
                 /*JDBC获取连接*/
@@ -185,7 +187,7 @@ public class DBHelper {
                 LOGGER.error("get connection failure",e);
             } finally {
                 /*数据库连接池，新建的情况要把新建的connection放入到池中*/
-                //CONNECTION_HOLDER.set(conn);
+                CONNECTION_HOLDER.set(conn);
             }
         }
         return conn;
@@ -198,7 +200,6 @@ public class DBHelper {
      public static void closeConnection() throws SQLException {
          Connection conn = CONNECTION_HOLDER.get();
          CONNECTION_HOLDER.remove();
-
         if (conn!=null){
             try {
                 conn.close();
@@ -248,6 +249,21 @@ public class DBHelper {
     }
 
     /**
+     * 释放连接到连接池
+     * @param con
+     * @throws SQLException
+     */
+    public static void releaseCon(Connection con) {
+        Connection connection = getConnection();
+        try {
+            CONNECTION_HOLDER.remove();
+            connection.close();  //由于用的是连接池,重写colse方法为将连接对象还给连接池
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 查询实体列表
      * @param entityClass
      * @param sql
@@ -267,6 +283,8 @@ public class DBHelper {
         } finally {
             //连接池不需要关闭conn
             /*closeConnection(conn);*/
+            /*将连接还给连接池*/
+            releaseCon(conn);
         }
         return entityList;
     }
@@ -291,6 +309,8 @@ public class DBHelper {
         } finally {
             //连接池不需要关闭conn
             /*closeConnection(conn);*/
+            /*将连接还给连接池*/
+            releaseCon(conn);
         }
         return entity;
     }
@@ -310,6 +330,9 @@ public class DBHelper {
             //e.printStackTrace();
             LOGGER.error("execute query failure",e);
             throw new RuntimeException(e);
+        }finally {
+            /*将连接还给连接池*/
+            releaseCon(conn);
         }
         return result;
     }
@@ -332,6 +355,8 @@ public class DBHelper {
         } finally {
             //连接池不需要关闭conn
             /*closeConnection(conn);*/
+            /*将连接还给连接池*/
+            releaseCon(conn);
         }
         return rows;
     }
@@ -434,11 +459,12 @@ public class DBHelper {
         }
     }
 
+    /*使用事务不能用上面封装的带有close释放连接的方法*/
+
     /**
      * 开启事务
      */
-    public static void beginTransaction(){
-        Connection conn = getConnection();   //获取连接(同一线程每次获取的是统一conn)
+    public static void beginTransaction(Connection conn){
         if (conn!=null){
             try {
                 conn.setAutoCommit(false);  //将自动提交属性改为false
@@ -455,8 +481,7 @@ public class DBHelper {
     /**
      * 提交事务
      */
-    public static void commitTransaction(){
-        Connection conn = getConnection();
+    public static void commitTransaction(Connection conn){
         if (conn != null){
             try {
                 conn.commit();   //提交事务
@@ -474,8 +499,7 @@ public class DBHelper {
     /**
      * 回滚事务
      */
-    public static void rollbackTransaction(){
-        Connection conn = getConnection();
+    public static void rollbackTransaction(Connection conn){
         if (conn != null){
             try {
                 conn.rollback();   //回滚

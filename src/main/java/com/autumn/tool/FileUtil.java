@@ -135,4 +135,67 @@ public class FileUtil {
         ow.write(content.toString());
         ow.close();
     }
+
+    /**
+     * byte数组转换成16进制字符串
+     * @param src
+     * @return
+     */
+    public static String bytesToHexString(byte[] src){
+        StringBuilder stringBuilder = new StringBuilder();
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+        for (int i = 0; i < src.length; i++) {
+            /*&与操作符,只有两个位同时为1,才能得到1,
+            0x代表16进制数,0xff表示的数二进制1111 1111 占一个字节.和其进行&操作的数,最低8位*/
+            int v = src[i] & 0xFF;
+            String hv = Integer.toHexString(v);
+            if (hv.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hv);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 根据文件流判断图片类型
+     * @param fis
+     * @return jpg/png/gif/bmp
+     */
+    public static boolean getPicTypeByStream(InputStream fis) {
+        //读取文件的前几个字节来判断图片格式
+        byte[] b = new byte[4];
+        try {
+            fis.read(b, 0, b.length);
+            String type = bytesToHexString(b).toUpperCase();
+            if (type.contains("FFD8FF")) {
+                return true; //jpg
+            } else if (type.contains("89504E47")) {
+                return true; //png
+            } else if (type.contains("47494638")) {
+                return true; //gif
+            } else if (type.contains("424D")) {
+                return true; //bmp
+            }else{
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            if(fis != null){
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(bytesToHexString(new byte[]{126}));
+    }
 }

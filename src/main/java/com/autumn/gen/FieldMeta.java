@@ -21,7 +21,7 @@ class FieldMeta {
 
     public String getFieldDataType() {
         /*fieldDataType字段类型有可能带有Unsigned字符,需要把这个过滤掉*/
-        fieldDataType = fieldDataType.toUpperCase().replaceAll("UNSIGNED","").trim();
+        fieldDataType = fieldDataType.replaceAll("UNSIGNED","").trim();
 
         if(fieldDataType.equalsIgnoreCase("bit")){
             return "boolean";

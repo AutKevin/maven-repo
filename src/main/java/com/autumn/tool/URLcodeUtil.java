@@ -12,8 +12,8 @@ import java.net.URLEncoder;
  * @description: 编码与解码操作工具类
  * @Author 秋雨
  */
-public class CodecUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CodecUtil.class);
+public class URLcodeUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(URLcodeUtil.class);
 
     /**
      * 将URL编码

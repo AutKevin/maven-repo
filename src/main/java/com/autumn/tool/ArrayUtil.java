@@ -17,7 +17,7 @@ public class ArrayUtil {
     }
 
     /**
-     * 判断数组是否非空
+     * 判断数组是否为空
      * @param array
      * @return
      */

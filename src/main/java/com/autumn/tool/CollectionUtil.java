@@ -38,7 +38,7 @@ public class CollectionUtil {
     }
 
     /**
-     * 判断map是否非
+     * 判断map是否为空
      * @param map
      * @return
      */

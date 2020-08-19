@@ -21,7 +21,7 @@ public class HttpUtil {
      * @return 返回string类型字符串
      * @throws IOException
      */
-    public static String sendUrlByCookie(String urlString, String method, String params, Map<String,String> requestProperty, String transencode, String decode)
+    public static String sendUrlWithHeader(String urlString, String method, String params, Map<String,String> requestProperty, String transencode, String decode)
             throws IOException {
         BufferedReader in = null;
         java.net.HttpURLConnection conn = null;
@@ -43,6 +43,7 @@ public class HttpUtil {
             //conn.setRequestProperty("Cookie","mstuid=1565660612968_2360; XM_agreement_sure=1; XM_agreement=0; xm_user_www_num=0;");
             //conn.setRequestProperty("Content-Encoding","gzip");
             //conn.setRequestProperty("Referer", "http://www.mi.com/index.jsp");
+            /*添加头信息*/
             if (!(requestProperty == null || requestProperty.isEmpty())){
                 for (Map.Entry<String,String> entry:requestProperty.entrySet()){
                     conn.setRequestProperty(entry.getKey(),entry.getValue());
@@ -95,7 +96,7 @@ public class HttpUtil {
      * @return 返回string类型字符串
      * @throws IOException
      */
-    public static String sendUrlToDownFileByCookie(String urlString, String method, String params, Map<String,String> requestProperty, String filePath)
+    public static String sendUrlToDownFileWithHeader(String urlString, String method, String params, Map<String,String> requestProperty, String filePath)
             throws IOException {
         java.net.HttpURLConnection conn = null;
         InputStream in = null;

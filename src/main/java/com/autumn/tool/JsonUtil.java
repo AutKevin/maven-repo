@@ -1,11 +1,16 @@
 package com.autumn.tool;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: JsonUtil
@@ -47,5 +52,41 @@ public class JsonUtil {
         }
         return pojo;
 
+    }
+
+    /**
+     * List转换为Json字符串
+     * @param obj
+     * @param <T>
+     * @return
+     */
+    public static <T> String toJsonS(List<T> obj){
+        String json;
+        try {
+            json = OBJECT_MAPPER.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("convert POJO to JSON failure",e);
+            throw new RuntimeException(e);
+        }
+        return json;
+    }
+
+    /**
+     * Json字符转换为List
+     * @param json
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> fromJsonS(String json, final Class<T> type){
+        List<T> list = null;
+        try {
+            CollectionType listType = OBJECT_MAPPER.getTypeFactory().constructCollectionType(ArrayList.class,type);
+            list = OBJECT_MAPPER.readValue(json,listType);
+        } catch (IOException e) {
+            LOGGER.error("convert JSON to POJO failure",e);
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 }

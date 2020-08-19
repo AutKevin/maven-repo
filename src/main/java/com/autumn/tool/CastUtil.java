@@ -2,15 +2,15 @@ package com.autumn.tool;
 
 /**
  * CastUtil
- * @description: 数据转型工具类
- * @Author 秋雨
+ *  数据转型工具类
+ * @author 秋雨
  **/
 public class CastUtil {
     /** 
     * @Description: 转为String类型
     * @Param: [obj] 
     * @return: java.lang.String 如果参数为null则转为空字符串
-    * @Author: qiuyu
+    * @author: qiuyu
     * @Date: 2018/8/15 
     */ 
     public static String castString(Object obj){
@@ -21,7 +21,7 @@ public class CastUtil {
     * @Description: 转为String类型（提供默认值）
     * @Param: [obj, defaultValue] 将obj转为string，如果obj为null则返回default
     * @return: java.lang.String 
-    * @Author: qiuyu
+    * @author: qiuyu
     * @Date: 2018/8/15 
     */ 
     public static String castString(Object obj,String defaultValue){
@@ -32,7 +32,7 @@ public class CastUtil {
     * @Description: 转为double类型，如果为null或者空字符串或者格式不对则返回0
     * @Param: [obj] 
     * @return: java.lang.String 
-    * @Author: qiuyu
+    * @author: qiuyu
     * @Date: 2018/8/15 
     */ 
     public static double castDouble(Object obj){
@@ -43,7 +43,7 @@ public class CastUtil {
     * @Description: 转为double类型 ，如果obj为null或者空字符串或者格式不对则返回defaultValue
     * @Param: [obj, defaultValue] 
     * @return: java.lang.String obj为null或者空字符串或者格式不对返回defaultValue
-    * @Author: qiuyu
+    * @author: qiuyu
     * @Date: 2018/8/15
     */ 
     public static double castDouble(Object obj,double defaultValue){

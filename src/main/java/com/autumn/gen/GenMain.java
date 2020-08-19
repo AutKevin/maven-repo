@@ -13,8 +13,6 @@ import static com.autumn.gen.GenEntityFile.wirteToFile;
 import static com.autumn.tool.DBHelper.closeAll;
 
 /**
- * @program: aeo-tool->GenMain
- * @description: ${description}
  * @author: 秋雨
  * @createTime: 2020-03-13 15:14
  **/

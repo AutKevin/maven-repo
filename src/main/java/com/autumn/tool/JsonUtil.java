@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @program: JsonUtil
- * @description: JSON工具类
- * @Author 秋雨
+ * JSON工具类
+ * @author 秋雨
  */
 
 public class JsonUtil {

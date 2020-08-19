@@ -20,10 +20,9 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @program: DBHelper
- * @description: 数据库操作类
+ * 数据库操作类
  * 使用DBCP连接池
- * @Author 秋雨
+ * @author 秋雨
  **/
 public class DBHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(DBHelper.class);

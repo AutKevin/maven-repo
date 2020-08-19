@@ -6,9 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @program: DateUtil
- * @description: 日期工具类
- * @Author 秋雨
+ * 日期工具类
+ * @author 秋雨
  */
 public class DateUtil {
 

@@ -10,9 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * @program: FileUtil
- * @description: 文件操作工具类
- * @Author 秋雨
+ * 文件操作工具类
+ * @author 秋雨
  */
 public class FileUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);

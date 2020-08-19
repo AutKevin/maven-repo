@@ -8,9 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @program: 反射工具
- * @description: 实现bean容器
- * @Author 秋雨
+ * 实现bean容器
+ * @author 秋雨
  */
 public class ReflectionUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReflectionUtil.class);

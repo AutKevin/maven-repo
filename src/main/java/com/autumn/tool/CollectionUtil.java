@@ -4,9 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * @program: CollectionUtil
- * @description: 集合工具类
- * @Author 秋雨
+ * 集合工具类
+ * @author 秋雨
  **/
 public class CollectionUtil {
     /**

@@ -65,7 +65,6 @@ public class DES {
      * @param data 待加密数据
      * @param key  秘钥
      * @return
-     * @throws Exception
      */
     public static String encrypt(String data, String key){
         try {

@@ -2,8 +2,8 @@ package com.autumn.tool;
 
 /**
  * StringUtil
- * @description: 字符串工具类
- * @Author 秋雨
+ *  字符串工具类
+ * @author 秋雨
  **/
 public class StringUtil {
 

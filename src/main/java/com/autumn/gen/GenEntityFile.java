@@ -14,8 +14,6 @@ import static com.autumn.tool.DBHelper.closeAll;
 import static com.autumn.tool.StringUtil.upFirstChar;
 
 /**
- * @program: aeo-tool->GenEntityFile
- * @description:
  * @author: 秋雨
  * @createTime: 2020-03-13 15:02
  **/

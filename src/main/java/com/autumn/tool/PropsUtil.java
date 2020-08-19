@@ -10,9 +10,8 @@ import java.io.*;
 import java.util.Properties;
 
 /**
- * @program: PropsUtil
- * @description: 属性文件工具类
- * @Author 秋雨
+ * 属性文件工具类
+ * @author 秋雨
  */
 public class PropsUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(PropsUtil.class);

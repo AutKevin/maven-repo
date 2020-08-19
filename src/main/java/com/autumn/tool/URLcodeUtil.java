@@ -8,9 +8,8 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 /**
- * @program: CodecUtil
- * @description: 编码与解码操作工具类
- * @Author 秋雨
+ * 编码与解码操作工具类
+ * @author 秋雨
  */
 public class URLcodeUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(URLcodeUtil.class);

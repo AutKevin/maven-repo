@@ -1,8 +1,7 @@
 package com.autumn.gen;
 
 /**
- * @program: aeo-tool->FieldMeta
- * @description: 字段信息表
+ * 字段信息表
  * @author: 秋雨
  * @createTime: 2020-03-13 14:35
  **/

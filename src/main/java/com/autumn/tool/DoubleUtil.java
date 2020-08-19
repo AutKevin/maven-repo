@@ -5,11 +5,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * @program: DoubleTool
- * @description: java类精确计算小数
+ * java类精确计算小数
  * double的计算不精确，会有类似0.0000000000000002的误差，正确的方法是使用BigDecimal或者用整型
  * 整型地方法适合于货币精度已知的情况，比如12.11+1.10转成1211+110计算，最后再/100即可
- * @Author 秋雨
+ * @author 秋雨
  */
 public class DoubleUtil implements Serializable {
     private static final long serialVersionUID = -3345205828566485102L;

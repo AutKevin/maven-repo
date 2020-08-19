@@ -4,8 +4,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 /**
- * @ClassName: TimestampUtil
- * @Description: 时间戳工具
+ * 时间戳工具
  * @author 秋雨
  * 修改历史 
  *  序号------原因------修改人---日期---

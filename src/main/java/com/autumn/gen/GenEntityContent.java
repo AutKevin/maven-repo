@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * @program: aeo-tool->genFrame
- * @description: 生成表的实体内容部分(package import field Method)
+ * 生成表的实体内容部分(package import field Method)
  * @author: 秋雨
  * @createTime: 2020-03-13 14:48
  **/

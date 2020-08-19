@@ -14,8 +14,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
- * @description: 将Excel导入数据库
- * @Author 秋雨
+ *  将Excel导入数据库
+ * @author 秋雨
  */
 public class ImportExcelToDB {
 

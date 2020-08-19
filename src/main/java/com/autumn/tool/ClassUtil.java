@@ -17,9 +17,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
- * @program: ClassUtil
- * @description: 類加載器
- * @Author 秋雨
+ * 類加載器
+ * @author 秋雨
  **/
 public class ClassUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassUtil.class);

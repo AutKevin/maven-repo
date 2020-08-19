@@ -5,9 +5,8 @@ import java.util.Map;
 
 
 /**
- * @program: HttpUtil
- * @description: http请求工具类
- * @Author 秋雨
+ * http请求工具类
+ * @author 秋雨
  */
 public class HttpUtil {
 

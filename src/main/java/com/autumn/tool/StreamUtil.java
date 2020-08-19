@@ -6,9 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 
 /**
- * @program: StreamUtil
- * @description: 流操作常用工具类
- * @Author 秋雨
+ * 流操作常用工具类
+ * @author 秋雨
  */
 
 public class StreamUtil {

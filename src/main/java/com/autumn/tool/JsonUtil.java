@@ -72,6 +72,7 @@ public class JsonUtil {
 
     /**
      * Json字符转换为List
+     * 实体需要使用@JsonIgnoreProperties(ignoreUnknown = true)注解
      * @param json
      * @param type
      * @param <T>
@@ -88,4 +89,5 @@ public class JsonUtil {
         }
         return list;
     }
+
 }

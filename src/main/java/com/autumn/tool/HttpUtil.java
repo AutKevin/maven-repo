@@ -16,13 +16,14 @@ public class HttpUtil {
      * @param method get/post
      * @param params 参数
      * @param requestProperty request请求头参数 cookie写在这里
-     * @param transencode 传输编码
-     * @param decode 解析编码
+     * @param request_transencode 发送传输的编码
+     * @param response_transencode 响应传输的编码
+     * @param response_decode 解析编码
      * @return 返回string类型字符串
      * @throws IOException
      */
-    public static String sendUrlWithHeader(String urlString, String method, String params, Map<String,String> requestProperty, String transencode, String decode)
-            throws IOException {
+    public static String sendUrlWithHeader(String urlString, String method, String params, Map<String,String> requestProperty, String request_transencode, String response_transencode, String response_decode)
+            throws Exception {
         BufferedReader in = null;
         java.net.HttpURLConnection conn = null;
         String msg = "";// 保存调用http服务后的响应信息
@@ -35,8 +36,9 @@ public class HttpUtil {
             conn.setDoOutput(true);// 使用 URL 连接进行输出，则将 DoOutput标志设置为 true
 
             //从google浏览器请求地址中的cookie里面找到这个
-            conn.setRequestProperty("accept".toLowerCase(), "*/*");
-            conn.setRequestProperty("connection".toLowerCase(), "keep-alive");
+            conn.setRequestProperty("Accept-Charset", "UTF-8");
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
             conn.setRequestProperty("User-Agent".toLowerCase(), "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36");
             //conn.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
             //conn.setRequestProperty("Content-Length",String.valueOf(params == null ? "" : params.length()));
@@ -50,30 +52,34 @@ public class HttpUtil {
                 }
             }
 
+            if (request_transencode == null || request_transencode.trim().length() == 0){
+                request_transencode = "utf-8";
+            }
+
             if (!(params == null || params.trim().length() == 0)) {
                 OutputStream outStream = conn.getOutputStream();// 返回写入到此连接的输出流
-                outStream.write(params.getBytes());
+                outStream.write(params.getBytes(request_transencode));  //不指定参数编码方式是默认用jvm的编码方式
                 outStream.close();// 关闭流
             }
 
-            if (transencode == null || transencode.trim().length() == 0){
-                transencode = "iso-8859-1";
+            if (response_transencode == null || response_transencode.trim().length() == 0){
+                response_transencode = "utf-8";
             }
-            if (decode == null || decode.trim().length() == 0){
-                decode = "utf-8";
+            if (response_decode == null || response_decode.trim().length() == 0){
+                response_decode = "utf-8";
             }
 
             if (conn.getResponseCode() == 200) {
                 // HTTP服务端返回的编码是UTF-8,故必须设置为UTF-8,保持编码统一,否则会出现中文乱码
                 in = new BufferedReader(new InputStreamReader(
-                        (InputStream) conn.getInputStream(), transencode));
+                        (InputStream) conn.getInputStream(), response_transencode));
                 String temp = "";
                 while ((temp = in.readLine())!=null) {
-                    msg += new String(temp.getBytes(transencode),decode);
+                    msg += new String(temp.getBytes(response_transencode),response_decode);
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new Exception("发送http请求失败",ex);
         } finally {
             if (null != in) {
                 in.close();
@@ -97,7 +103,7 @@ public class HttpUtil {
      * @throws IOException
      */
     public static String sendUrlToDownFileWithHeader(String urlString, String method, String params, Map<String,String> requestProperty, String filePath)
-            throws IOException {
+            throws Exception {
         java.net.HttpURLConnection conn = null;
         InputStream in = null;
         String result = "";
@@ -126,7 +132,7 @@ public class HttpUtil {
 
             if (!(params == null || params.trim().length() == 0)) {
                 OutputStream outStream = conn.getOutputStream();// 返回写入到此连接的输出流
-                outStream.write(params.getBytes());
+                outStream.write(params.getBytes("utf-8"));
                 outStream.close();// 关闭流
             }
             int responseCode = conn.getResponseCode();
@@ -150,7 +156,7 @@ public class HttpUtil {
                 out.close();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new Exception("发送http请求失败",ex);
         } finally {
             if (null != in) {
                 in.close();
@@ -160,5 +166,10 @@ public class HttpUtil {
             }
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+
+
     }
 }

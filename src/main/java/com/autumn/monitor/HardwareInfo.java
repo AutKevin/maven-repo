@@ -2,9 +2,12 @@ package com.autumn.monitor;
 
 import com.sun.management.OperatingSystemMXBean;
 
+import java.io.*;
 import java.lang.management.*;
-import java.io.File;
+import java.net.*;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -189,7 +192,55 @@ public class HardwareInfo {
         System.out.println(mxb.getNonHeapMemoryUsage().toString());    //init = 2555904(2496K) used = 7802056(7619K) committed = 9109504(8896K) max = -1(-1K)
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    /**
+     * 获取本机IP
+     * @return 返回本机IP,如果有多个网卡,返回第一个
+     * @throws Exception
+     */
+    public static String getLocalIP() throws Exception {
+        try {
+            InetAddress ia=InetAddress.getLocalHost();
+            String localip=ia.getHostAddress();
+            /*String localname=ia.getHostName();
+            System.out.println("本机名称是："+ localname);
+            System.out.println("本机的ip是 ："+localip);*/
+            return localip;
+        } catch (UnknownHostException e) {
+            throw new Exception("获取本机IP失败",e);
+        }
+    }
+
+    /**
+     * 获取本地IP列表 - 多个网卡时使用
+     * @return ip地址列表
+     * @throws Exception
+     */
+    public static List<String> getLocalIPList() throws Exception {
+        List<String> ipList = new ArrayList<String>();
+        try {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+            NetworkInterface networkInterface;
+            Enumeration<InetAddress> inetAddresses;
+            InetAddress inetAddress;
+            String ip;
+            while (networkInterfaces.hasMoreElements()) {
+                networkInterface = networkInterfaces.nextElement();
+                inetAddresses = networkInterface.getInetAddresses();
+                while (inetAddresses.hasMoreElements()) {
+                    inetAddress = inetAddresses.nextElement();
+                    if (inetAddress != null && inetAddress instanceof Inet4Address) { // IPV4
+                        ip = inetAddress.getHostAddress();
+                        ipList.add(ip);
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            throw new Exception("获取本机IP失败",e);
+        }
+        return ipList;
+    }
+
+    public static void main(String[] args) throws Exception {
         System.out.println("系统类型:"+isWindowsOrLinux());
         System.out.println("--------------------------------");
         System.out.println("系统版本:"+getOSname());
@@ -212,5 +263,13 @@ public class HardwareInfo {
 
         getHeapMemory();
         getNonHeapMemory();
+
+        String localIP = getLocalIP();
+        System.out.println("本地IP:"+ localIP);
+
+        List<String> localIPList = getLocalIPList();
+        System.out.println("本地IP列表:"+localIPList);
+
+
     }
 }

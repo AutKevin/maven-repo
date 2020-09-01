@@ -74,6 +74,12 @@
             <artifactId>poi-ooxml</artifactId>
             <version>3.14</version>
         </dependency>
+        <!-- sigar服务器监控 -->
+        <dependency>
+            <groupId>org.hyperic</groupId>
+            <artifactId>sigar</artifactId>
+            <version>1.6.5.132</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -86,6 +92,19 @@
                     <configuration>
                         &lt;!&ndash;编译的生成位置在target/mvn-repo&ndash;&gt;
                         <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+                    </configuration>
+                </plugin>-->
+                <!--打包时同时编译lib下面的包-->
+                <!--<plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.7</source>
+                        <target>1.7</target>
+                        <encoding>UTF-8</encoding>
+                        <compilerArguments>
+                            <extdirs>${project.basedir}\src\main\resources\lib</extdirs>
+                        </compilerArguments>
                     </configuration>
                 </plugin>-->
                 <!--打包时带依赖包-->

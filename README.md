@@ -1,15 +1,23 @@
+# 项目结构
+
+/src
+-----/main
+----------/java  代码文件
+----------/resource  配置文件
+---------------/CONF_PATH  需要放在环境变量path目录下文件,可以直接部署在jdk的bin下面
+
 # maven-repo
 
 aeolian工具合集
 
 ### Maven仓库
 
- 典型的一个maven依赖下会有这三个文件： 
+ 典型的一个maven依赖下会有这三个文件：
 
 ```json
-maven-metadata.xml 
-maven-metadata.xml.md5 
-maven-metadata.xml.sha1 
+maven-metadata.xml
+maven-metadata.xml.md5
+maven-metadata.xml.sha1
 ```
 
 `maven-metadata.xml`里面记录了最后deploy的版本和时间。  md5、sha1校验文件是用来保证这个meta文件的完整性。 
@@ -126,5 +134,19 @@ maven-metadata.xml文件很重要，如果没有这个文件来指明最新的ja
 </repository>
 ```
 
+## 打包
 
+### maven-assembly-plugin带依赖打包
+
+```bash
+mvn assembly:assembly 
+```
+
+### 导出依赖包
+
+```bash
+mvn clean compile    #重新编译
+mvn clean package    #重新打包
+mvn dependency:copy-dependencies    #导出依赖包
+```
 

@@ -49,7 +49,7 @@ public class PathUtil {
      */
     public static void setSystemPathVariable(String pathFolder) throws Exception {
         if (pathFolder==null || pathFolder.trim().isEmpty()){
-            pathFolder = "conf";
+            pathFolder = "CONF_PATH";
         }
         try {
             String classPath = System.getProperty("user.dir") + File.separator + pathFolder;
@@ -67,7 +67,7 @@ public class PathUtil {
 
     public static void main(String[] args) throws Exception {
 
-        String classPath = System.getProperty("user.dir") + File.separator + "conf";
+        String classPath = System.getProperty("user.dir") + File.separator + "CONF_PATH";
         System.out.println(classPath);
         String path = System.getProperty("java.library.path");
         System.out.println(path);

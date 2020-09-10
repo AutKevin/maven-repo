@@ -16,6 +16,22 @@ public class DateUtil {
     }
 
     /**
+     * 去除数据库查询出来的时间.0结尾的情况
+     * @param date_str 数据库查出来的日期字符串,例如: 2020-12-12 12:12:12.0
+     * @return 取出.0结尾的两个字符,例如:2020-12-12 12:12:12
+     */
+    public static String getdateWithoutEnd(String date_str){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = sdf.parse(date_str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sdf.format(date);
+    }
+
+    /**
      * 获取当前日期(年月日)
      * @return 例如: 2020-03-09
      */

@@ -62,10 +62,10 @@ public class DateUtil {
 
     /**
      * 获取当前时间(年月日时分秒)
-     * @return yyyy-MM-ddHHmmss
+     * @return yyyyMMddHHmmss
      */
     public static String getCurrTimeForFile(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HHmmss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         String time = simpleDateFormat.format(new Date());
         return time;
     }

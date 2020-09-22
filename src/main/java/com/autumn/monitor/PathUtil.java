@@ -41,6 +41,28 @@ public class PathUtil {
     }
 
     /**
+     * 获取当前项目路径
+     * @return
+     */
+    public String getSysPath()
+    {
+        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        if(System.getProperty("os.name").contains("windows"))
+        {
+            //windows路径开头多一个斜杠,所以要截取掉
+            path = path.substring(1,path.length());
+        }
+
+        //如果是jar包,则只返回父级 目录
+        if(path.contains("jar"))
+        {
+            path = path.substring(0,path.lastIndexOf("."));
+            return path.substring(0,path.lastIndexOf("/"));
+        }
+        return path;
+    }
+
+    /**
      * 设置项目下的某一个文件夹为系统环境path变量
      * 注意:
      * 1.要部署后运行

@@ -42,22 +42,30 @@ public class HardwareInfo {
     }
 
     /**
-     * 获取CPU信息
+     * 获取CPU信息 - 至少需要15秒甚至更多
      * @return CPU占用百分比
      * @throws InterruptedException
      */
     public static int getCpuLoad() throws InterruptedException {
+        boolean isFirst = true; //第一次百分之百过滤
         double cpuLoad = osmxb.getSystemCpuLoad();    /*windows下第一次调用返回-1,因为JVM需要运行几秒钟才能收集CPU信息*/
+        double sum = 0.0;
         int count = 0;
         while(cpuLoad <= 0.0){    /*如果第一次没有获取成功*/
             Thread.sleep(3000);    /*等待几秒,让JVM收集CPU信息*/
             cpuLoad = osmxb.getSystemCpuLoad();   /*再次获取CPU信息*/
-            if (count > 5){
+            if(cpuLoad >= 1.0 && isFirst){  //如果第一次利用率是100,则不计入
+                isFirst = false;
+                continue;
+            }else if (count > 5){  //统计5次
                 break;
+            }else {
+                sum += cpuLoad;
             }
             count++;
         }
-        int percentCpuLoad = (int) (cpuLoad * 100);
+
+        int percentCpuLoad = (int) (sum/count * 100);
         return percentCpuLoad;
     }
 

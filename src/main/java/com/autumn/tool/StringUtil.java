@@ -1,5 +1,7 @@
 package com.autumn.tool;
 
+import java.util.Random;
+
 /**
  * StringUtil
  *  字符串工具类
@@ -39,5 +41,20 @@ public class StringUtil {
             return new String(ch);
         }
         return null;
+    }
+
+    /**
+     * 随机生成四位字符
+     * @return 四位由数字和字母组成的字符
+     */
+    public static String getRandom4Char(){
+        String str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        String uuid=new String();
+        for(int i=0;i<4;i++)
+        {
+            char ch=str.charAt(new Random().nextInt(str.length()));
+            uuid+=ch;
+        }
+        return uuid;
     }
 }

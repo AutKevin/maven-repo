@@ -1,7 +1,9 @@
 package com.autumn.tool;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -166,6 +168,75 @@ public class HttpUtil {
             }
         }
         return result;
+    }
+
+    /**
+     * 获取响应头
+     * @param urlString
+     * @param method
+     * @param params
+     * @param requestProperty
+     * @param request_transencode
+     * @param response_transencode
+     * @param response_decode
+     * @return
+     * @throws Exception
+     */
+    public static Map<String,String> getResHeaderByUrl(String urlString, String method, String params, Map<String,String> requestProperty, String request_transencode, String response_transencode, String response_decode)
+            throws Exception {
+        BufferedReader in = null;
+        java.net.HttpURLConnection conn = null;
+        Map<String,String> responseHeader = new HashMap<String,String>();// 保存调用http服务后的响应头
+        try {
+            java.net.URL url = new java.net.URL(urlString);
+            conn = (java.net.HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(method.toUpperCase());// 请求的方法get,post,put,delete
+            conn.setConnectTimeout(5 * 1000);// 设置连接超时时间为5秒
+            conn.setReadTimeout(20 * 1000);// 设置读取超时时间为20秒
+            conn.setDoOutput(true);// 使用 URL 连接进行输出，则将 DoOutput标志设置为 true
+
+            //从google浏览器请求地址中的cookie里面找到这个
+            conn.setRequestProperty("Accept-Charset", "UTF-8");
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("User-Agent".toLowerCase(), "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36");
+
+            /*添加头信息*/
+            if (!(requestProperty == null || requestProperty.isEmpty())){
+                for (Map.Entry<String,String> entry:requestProperty.entrySet()){
+                    conn.setRequestProperty(entry.getKey(),entry.getValue());
+                }
+            }
+
+            if (request_transencode == null || request_transencode.trim().length() == 0){
+                request_transencode = "utf-8";
+            }
+
+            if (!(params == null || params.trim().length() == 0)) {
+                OutputStream outStream = conn.getOutputStream();// 返回写入到此连接的输出流
+                outStream.write(params.getBytes(request_transencode));  //不指定参数编码方式是默认用jvm的编码方式
+                outStream.close();// 关闭流
+            }
+
+            //获取响应头
+            Map headers = conn.getHeaderFields();
+            Set<String> keys = headers.keySet();
+            for( String key : keys ){
+                String val = conn.getHeaderField(key);
+                System.out.println(key+":       "+val);
+                responseHeader.put(key,val);
+            }
+        } catch (Exception ex) {
+            throw new Exception("发送http请求失败",ex);
+        } finally {
+            if (null != in) {
+                in.close();
+            }
+            if (null != conn) {
+                conn.disconnect();
+            }
+        }
+        return responseHeader;
     }
 
     public static void main(String[] args) {

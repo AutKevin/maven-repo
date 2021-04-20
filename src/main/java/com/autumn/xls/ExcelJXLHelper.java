@@ -70,7 +70,7 @@ public class ExcelJXLHelper {
             String[] ary = new String[120];
 
             for (int i = 0; i < row; i++) {
-                ary = l.get(i).split("\\" + SEPARATOR);
+                ary = l.get(i).split("\\" + SEPARATOR,-1);
                 for (int j = 0; j < columns; j++) {
 
                     if(i==row-1)
@@ -153,7 +153,7 @@ public class ExcelJXLHelper {
             String[] ary = new String[120];
 
             for (int i = 0; i < row; i++) {
-                ary = l.get(i).split("\\" + SEPARATOR);
+                ary = l.get(i).split("\\" + SEPARATOR,-1);
                 for (int j = 0; j < columns; j++) {
 
 

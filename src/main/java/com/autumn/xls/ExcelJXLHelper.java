@@ -201,7 +201,7 @@ public class ExcelJXLHelper {
                 if (row!=null){
                     /*遍历单条记录的数据列*/
                     for (int j = 0;j<row.size();j++){
-                        sheet.addCell(new Label(j,i+1, (String) row.get(i)));
+                        sheet.addCell(new Label(j,i+1, (String) row.get(j)));
                     }
                 }
             }

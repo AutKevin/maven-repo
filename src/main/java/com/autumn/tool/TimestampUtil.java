@@ -1,7 +1,8 @@
 package com.autumn.tool;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 时间戳工具
@@ -62,10 +63,25 @@ public class TimestampUtil {
         String timestamp = String.valueOf(time/1000);  
         return timestamp;  
     }
+
+    /**
+     * 获取当日零点的10位时间戳(精确到秒)
+     * @return
+     */
+    public static long getCurDateTimeStamp(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        java.util.Date date = calendar.getTime();
+        long timestamp = date.getTime()/1000;
+        return timestamp;
+    }
     
     public static void main(String[] args) {
 		System.out.println("实时时间戳:"+getNowTimeStamp());
-		System.out.println(timeStamp2Date("1596070845", null));
-		System.out.println(date2TimeStamp("2020-07-30 09:00:45", null));
+		System.out.println(timeStamp2Date("1637251200", null));
+		System.out.println(date2TimeStamp("2021-11-19 00:00:00", null));
 	}
 }

@@ -1,5 +1,7 @@
 package com.autumn.tool;
 
+import com.autumn.exception.IdCardException;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -91,7 +93,7 @@ public class IdCardNumUtil {
      *      0 1 2 3 4 5 6 7 8 9 10
      *      1 0 X 9 8 7 6 5 4 3 2
      */
-    private static char calculateVerifyCode(CharSequence idcard) {
+    public static char calculateVerifyCode(CharSequence idcard) {
         int sum = 0;
         char c;
         int c_i;
@@ -169,7 +171,7 @@ public class IdCardNumUtil {
                 int currentYear = Calendar.getInstance().get(1);
                 this.age = currentYear - this.year;
             }else{
-                throw new RuntimeException("身份证不正确！");
+                throw new IdCardException("身份证"+idcard+"不正确！");
             }
         } catch (Exception e) {
             e.printStackTrace();

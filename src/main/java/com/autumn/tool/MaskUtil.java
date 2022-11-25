@@ -2,6 +2,9 @@ package com.autumn.tool;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * 敏感数据脱敏方法
+ */
 public class MaskUtil {
 
     /**

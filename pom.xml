@@ -93,6 +93,14 @@
             <artifactId>jxl</artifactId>
             <version>2.6.12</version>
         </dependency>
+
+        <!-- FTP上传下载文件 commons-net -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.5</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -169,6 +177,16 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>6</source>
+                    <target>6</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <!--发布到github package,一定要注释掉maven-deploy-plugin插件-->

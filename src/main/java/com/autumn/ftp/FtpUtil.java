@@ -268,7 +268,7 @@ public class FtpUtil {
      * 测试
      * @param args
      */
-    public static void main(String[] args) throws FileNotFoundException {
+    /*public static void main(String[] args) throws FileNotFoundException {
         //初始化ftpclient
         FTPClient ftpClient = FtpUtil.initFtpClient("127.0.0.1", 21, "autumn", "123456");
 
@@ -284,5 +284,5 @@ public class FtpUtil {
 
         //登出
         FtpUtil.logout(ftpClient);
-    }
+    }*/
 }

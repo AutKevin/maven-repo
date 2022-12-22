@@ -11,7 +11,7 @@ public class FtpUtilTest {
     public static void main(String[] args) throws FileNotFoundException {
 
         //初始化ftpclient
-        FTPClient ftpClient = FtpUtil.initFtpClient("10.77.198.133", 21, "95533", "95533");
+        FTPClient ftpClient = FtpUtil.initFtpClient("127.0.0.1", 21, "autumn", "123456");
 
         //上传文件
         InputStream is = new FileInputStream("D:\\1.txt");  //输入文件流
